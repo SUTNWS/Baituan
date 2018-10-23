@@ -1,0 +1,33 @@
+流程简介：
+sudo apt-get install apache2
+sudo apt-get install php php-fpm
+sudo apt-get install mongodb
+sudo apt-get install php-mongodb
+
+下载的php默认为7.2版本
+此流程能完整的安装php+mongodb，无需配置
+之后使用mongodb菜鸟教程中的mongo-php7教程中的代码，即可完成简单测试
+<?php
+$manager = new MongoDB\Driver\Manager("mongodb://localhost:27017");
+
+// 插入数据
+$bulk = new MongoDB\Driver\BulkWrite;
+$bulk->insert(['x' => 1, 'name'=>'菜鸟教程', 'url' => 'http://www.runoob.com']);
+$bulk->insert(['x' => 2, 'name'=>'Google', 'url' => 'http://www.google.com']);
+$bulk->insert(['x' => 3, 'name'=>'taobao', 'url' => 'http://www.taobao.com']);
+$manager->executeBulkWrite('test.sites', $bulk);
+
+$filter = ['x' => ['$gt' => 1]];
+$options = [
+    'projection' => ['_id' => 0],
+    'sort' => ['x' => -1],
+];
+
+// 查询数据
+$query = new MongoDB\Driver\Query($filter, $options);
+$cursor = $manager->executeQuery('test.sites', $query);
+
+foreach ($cursor as $document) {
+    print_r($document);
+}
+?>
