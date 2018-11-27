@@ -1,0 +1,31 @@
+import Vue from 'vue'
+import Router from 'vue-router'
+import HelloWorld from '@/components/HelloWorld'
+import HelloWorld1 from '@/components/HelloWorld1'
+
+Vue.use(Router)
+
+const Bar = { template: '<div>foo</div>' }
+const User = {
+  template: '<div>User {{ $route.params.id }}</div>'
+}
+
+
+export default new Router({
+  routes: [
+    {
+      path: '/',
+      name: 'HelloWorld',
+      component: HelloWorld
+    },
+    {
+      path: '/bar',
+      name: 'bar',
+      component: Bar
+    },
+    {
+      path: '/user/:id',
+      component: HelloWorld1
+    }
+  ]
+})
